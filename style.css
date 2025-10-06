@@ -1,0 +1,47 @@
+body{
+    background-color: aquamarine;
+    height: 100vh;
+    margin-left: 30vh;
+    margin-right: 30vh;
+    margin-top: 30vh;
+    background-image: url("/resources/back.jpeg");
+    background-size: cover;
+    background-position: center;
+    
+}
+
+#h1Login{
+    text-align: center;
+    font-size: 4rem;
+}
+
+#loginBox{
+    background-color: transparent;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    border: 1px solid black;
+}
+#loginBox input{
+    background-color: rgba(255, 255, 255, 0.22);
+    align-self: center;
+    width: 50vh;
+    font-size: 2rem;
+    border-radius: 20px;
+    border: none;
+    padding: 10px;
+}
+#loginBox button{
+    font-size: 1rem;
+    width: 90px;
+    align-self: center;
+    padding: 5px;
+    border-radius: 20px;
+    border: none;
+    background-color: white;
+}
