@@ -16,6 +16,8 @@ const pool = new Pool({
     port: 5432,
 });
 
+
+// Post to REGISTER USER 
 app.post('/registerUser', async(req,res) => {
 
     const {nameUser, passwordUser} = req.body;
@@ -40,14 +42,14 @@ app.post('/registerUser', async(req,res) => {
         res.json({ success: true, code}); // We return the code to use it in the frontend
 
     }catch(err){
-        console.log("Error al registrar usuario",err);
-        res.status(500).json({success: false, message: "Error al registrar usuario"})
+        console.log("Error when registering",err);
+        res.status(500).json({success: false, message: "Error when registering user"})
     }
 });
 
 
 
-
+// Post to CHECK USER 
 app.post('/checkuser', async(req,res) => {
     const{code,password} = req.body; // We read the body of the json sent
     try{
@@ -57,15 +59,22 @@ app.post('/checkuser', async(req,res) => {
             [code]
         );
         if(result.rows.length === 0){
-            console.log("usuario no encontrado")
+            console.log("User not found")
 
         }else{
-            console.log("User encontrado")
-            console.log(result.rows)
+            console.log("User found!")
+            const userData = result.rows[0];
+            const passwordMatch = await bcrypt.compare(password,userData.password)
+            if(passwordMatch){
+                res.json({ success: true, message:"Correct!"});
+            }else{
+                console.log("password incorrect")
+                res.json({success:false, message:"Incorrect password"})
+            }
         }
     }catch(err){
         console.log(err)
-        res.status(500).send("Error")
+        res.status(500).send("Error").json({success:false,message:"Error when signing in"})
     }
     
 });
