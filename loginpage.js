@@ -16,10 +16,12 @@ submitButton.addEventListener("click", async() => {
     else{
         await loginUser(userCode,userPassword)
     }
+})
 
-    
-
-
+// Action listener for REGISTER NEW USER
+const registerButton = document.getElementById("registerButton");
+registerButton.addEventListener("click", () => {
+    window.location.href = "register.html";
 })
 
 // Function to call backend and check user code 
