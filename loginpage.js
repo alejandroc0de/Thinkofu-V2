@@ -35,7 +35,9 @@ async function loginUser(userCode,userPassword){
         });
         const data = await res.json();
         if(data.success){
-            window.location.href = "mainWindow.html"
+            window.location.href = "mainWindow.html";
+            localStorage.setItem("userCode", data.userCode)
+            localStorage.setItem("userName", data.userName)
         }else{
             alert(data.message);
         }

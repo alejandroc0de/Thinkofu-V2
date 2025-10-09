@@ -66,7 +66,7 @@ app.post('/checkuser', async(req,res) => {
             const userData = result.rows[0];
             const passwordMatch = await bcrypt.compare(password,userData.password)
             if(passwordMatch){
-                res.json({ success: true, message:"Correct!"});
+                res.json({ success: true, message:"Correct!", userCode: code, userName: userData.name});
             }else{
                 console.log("password incorrect")
                 res.json({success:false, message:"Incorrect password"})
