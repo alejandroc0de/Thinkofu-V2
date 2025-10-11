@@ -76,7 +76,31 @@ app.post('/checkuser', async(req,res) => {
         console.log(err)
         res.status(500).send("Error").json({success:false,message:"Error when signing in"})
     }
-    
+});
+
+
+app.post('/findPartner', async(req,res) => {
+    const {partnerCode} = req.body;
+    // We receive the partnerCode from the backend 
+    try{
+        console.log(partnerCode)
+        const result = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [partnerCode]
+        );
+        // IF partner is not found 
+        if(result.rows.length === 0){
+            console.log("PartnerCode is incorrect")
+            res.json({success: false, message: "Incorrect code"})
+        }
+        else{
+            console.log("User found")
+            const userData = result.rows[0]
+            res.json({success: true, message: "Partner Found!", userCode : userData.code, userName: userData.name})
+        }
+    }catch(err){
+        console.log("Error when trying to find partner " + err)
+    }
 });
 
 

@@ -101,3 +101,28 @@ body{
 .pushable:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* STYLING FOR INPUT */
+
+.input {
+  height: 40px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  caret-color: rgb(255, 81, 0);
+  box-shadow: 5px 5px 20px hwb(299 68% 10% / 0.2);;
+  background-color: rgba(255, 255, 255, 0.465);
+  border-radius: 30px;
+  padding-left: 15px;
+  letter-spacing: 0.8px;
+  color: rgb(0, 0, 0);
+  font-size: 20.4px;
+  font-weight: 500;
+}
+
+.no-Show{
+  display: none;
+}
+#thinkofu{
+  margin-top: 50px;
+}
