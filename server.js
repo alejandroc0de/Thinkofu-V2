@@ -79,30 +79,78 @@ app.post('/checkuser', async(req,res) => {
 });
 
 
+// POST TO FIND PARTNER 
 app.post('/findPartner', async(req,res) => {
-    const {partnerCode} = req.body;
-    // We receive the partnerCode from the backend 
+    const {partnerCode,currentUser} = req.body;
+    // We receive the partnerCode from the frontend, we have to receive the current user code and also his partner
     try{
         console.log(partnerCode)
-        const result = await pool.query(
+        // We extract the data of both partners using their ids from the frontend 
+        const partner = await pool.query(
             'SELECT * FROM users WHERE code = $1',
             [partnerCode]
         );
+        const current = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [currentUser]
+        );
+
         // IF partner is not found 
-        if(result.rows.length === 0){
+        if(partner.rows.length === 0){
             console.log("PartnerCode is incorrect")
             res.json({success: false, message: "Incorrect code"})
         }
         else{
             console.log("User found")
-            const userData = result.rows[0]
-            res.json({success: true, message: "Partner Found!", userCode : userData.code, userName: userData.name})
+            const partnerData = partner.rows[0]
+            const currentUserData = current.rows[0]
+            // Lets update the client profile to add his partner 
+            // lets set current user
+            await pool.query(
+                "UPDATE users SET partner_id = $1 WHERE id = $2",
+                [partnerData.id,currentUserData.id]
+            );
+            // Now the partner
+            await pool.query(
+                "UPDATE users SET partner_id = $1 WHERE id = $2",
+                [currentUserData.id,partnerData.id]
+            );          
+            res.json({success: true, message: "Partner Found and linked!", userCode : partnerData.code, userName: partnerData.name})
+            console.log("Partners were linked succesfully")
         }
     }catch(err){
         console.log("Error when trying to find partner " + err)
+        res.status(500).json({success:false , message : "Server error when linking partners"})
     }
 });
 
+// POST TO CHECK IF USER HAS PARTNER ON START UP
+app.post('/checkPartner', async(req,res) => {
+    const {userCode} = req.body;
+    try{
+        // Asking DB for user Data
+        const response = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [userCode]
+        );
+        const userData = response.rows[0]
+        if(!userData.partner_id){
+            // Doesnt have a partner yet
+            return res.json({success: true, hasPartner: false})
+        }
+        // Check partner name and code to return
+        const partnerId = userData.partner_id;
+        const partner = await pool.query(
+            "SELECT * FROM users WHERE id = $1",
+            [partnerId]
+        );
+        const partnerData = partner.rows[0];
+        res.json({success:true, hasPartner: true, message: "Client has a partner", partnerName: partnerData.name, partnerCode:partnerData.code})
+    }catch(err){
+        console.error("Error when retriving partner info",err)
+        res.status(500).json({success:false, message : "Server error when checking for partner"})
+    }
+});
 
 app.listen(2000, () => {
     console.log("Server runnin in port 3000")

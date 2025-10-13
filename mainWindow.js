@@ -1,16 +1,41 @@
+let userCode
+let userName
+const findPartner = document.getElementById("buttonFindPartner");
+const partnerInput = document.getElementById("partnerInput")
 // Getting the user code and name from the local storage 
+// Also checking if client has partner
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // LOCAL STORAGE = userCode and userName
-    const userCode = localStorage.getItem("userCode")
-    const userName = localStorage.getItem("userName")
+    userCode = localStorage.getItem("userCode")
+    userName = localStorage.getItem("userName")
     document.getElementById("welcomeMessage").textContent = `Welcome to thinkofu ${userName}`;
+    // WE check ON START UP if client has a partner 
+    try{
+        const res = await fetch("/checkPartner", {
+            method: "POST",
+            headers : {"Content-Type":"application/json"},
+            body : JSON.stringify({userCode:userCode})
+        });
+
+        // Response from backend
+        const response = await res.json();
+        if(response.hasPartner){
+            //Client has a partner 
+            partnerInput.classList.add("no-Show")
+            findPartner.textContent = `Your partner is ${response.partnerName}`
+            findPartner.disabled = true;
+        }
+    }catch(err){
+        console.log("Error when checking for partner on startup", err)
+    }
 })
 
+
 // Finding the client partner
-const findPartner = document.getElementById("buttonFindPartner");
 findPartner.addEventListener("click", async () => {
-    const partnerCode = document.getElementById("partnerInput").value.trim();
+    if(findPartner.disabled) return; // Disable all the input logic
+    const partnerCode = partnerInput.value.trim();
     //CALLING BACKEND 
     if(!partnerCode){
         alert("Enter a partner code");
@@ -21,15 +46,15 @@ findPartner.addEventListener("click", async () => {
             // We use POST to send the code to the backend and check partner
             method: "POST",
             headers: {"Content-Type":"application/json"},
-            body : JSON.stringify({partnerCode : partnerCode})
-        })
+            body : JSON.stringify({partnerCode : partnerCode, currentUser: userCode})
+        });
 
         // Now we check the responde from the backend
         const response = await res.json();
 
         if(response.success){
             // IF partner was found 
-            document.getElementById("partnerInput").classList.add("no-Show")
+            partnerInput.classList.add("no-Show")
             findPartner.textContent = `Your partner is ${response.userName}`
             findPartner.disabled = true;
         }else{
@@ -38,6 +63,10 @@ findPartner.addEventListener("click", async () => {
             return
         }
     }catch (err){
-        console.log(err)
+        console.log("Error when trying to save partner info" , err)
     }
 });
+
+
+// TO DO :
+// If cx logs out we have to clear localstorage 
