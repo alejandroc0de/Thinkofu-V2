@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require("bcrypt"); // module to encrypt password 
 const app = express();
 const PORT = 3000;
-app.use(express.static(__dirname)); // Serves all the files in the directory 
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+app.use(express.static('public')); // Serves all the files in the directory 
 app.use(express.json()); // We let server know we will send json to parse back to js
 
 // Postgres Setup
