@@ -126,3 +126,15 @@ body{
 #thinkofu{
   margin-top: 50px;
 }
+#logoutButton {
+  font-family: monospace;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: rgba(255, 255, 255, 0.264);
+  font-size: 1rem;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 20px;
+}

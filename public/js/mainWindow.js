@@ -1,7 +1,8 @@
 let userCode
 let userName
 const findPartner = document.getElementById("buttonFindPartner");
-const partnerInput = document.getElementById("partnerInput")
+const partnerInput = document.getElementById("partnerInput");
+const logoutButton = document.getElementById("logoutButton");
 // Getting the user code and name from the local storage 
 // Also checking if client has partner
 
@@ -66,6 +67,8 @@ findPartner.addEventListener("click", async () => {
         console.log("Error when trying to save partner info" , err)
     }
 });
+
+//Logout Logic
 
 
 // TO DO :
