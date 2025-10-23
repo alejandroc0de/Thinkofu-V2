@@ -69,6 +69,11 @@ findPartner.addEventListener("click", async () => {
 });
 
 //Logout Logic
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("userCode")
+    localStorage.removeItem("userName")
+    window.location.href = "/index.html"
+})
 
 
 // TO DO :
