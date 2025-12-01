@@ -116,6 +116,16 @@ app.post('/findPartner', async(req,res) => {
                 "UPDATE users SET partner_id = $1 WHERE id = $2",
                 [currentUserData.id,partnerData.id]
             );          
+            const roomId = [currentUserData.id,partnerData.id].sort().join("-"); // create room id 
+            await pool.query(
+                "UPDATE users SET room_id = $1 WHERE id = $2",
+                [roomId,currentUserData.id]
+            )
+            await pool.query(
+                "UPDATE users SET room_id = $1 WHERE id = $2",
+                [roomId,partnerData.id]
+            )
+
             res.json({success: true, message: "Partner Found and linked!", userCode : partnerData.code, userName: partnerData.name})
             console.log("Partners were linked succesfully")
         }
@@ -152,6 +162,16 @@ app.post('/checkPartner', async(req,res) => {
         res.status(500).json({success:false, message : "Server error when checking for partner"})
     }
 });
+
+//POST TO SAVE THINKFOFUS 
+app.post('/saveThink', async(req,res) => {
+    const {userCode} = req.body;
+    try{
+        
+    }catch(err){
+
+    }
+})
 
 app.listen(2000, () => {
     console.log("Server runnin in port 3000")

@@ -3,6 +3,7 @@ let userName
 const findPartner = document.getElementById("buttonFindPartner");
 const partnerInput = document.getElementById("partnerInput");
 const logoutButton = document.getElementById("logoutButton");
+const thinkofuButton = document.getElementById("thinkofuButton")
 // Getting the user code and name from the local storage 
 // Also checking if client has partner
 
@@ -68,6 +69,27 @@ findPartner.addEventListener("click", async () => {
     }
 });
 
+// Saving messages
+
+thinkofuButton.addEventListener("click", async() => {
+    let message = "Your partner is thinking of you"
+    userCode = localStorage.getItem("userCode")
+    console.log(userCode)
+    try {
+        const res = await fetch("/saveThink", {
+            method: "POST",
+            headers : {"Content-Type":"application/json"},
+            body : JSON.stringify({userCode:userCode})
+        });
+        
+    } catch (err) {
+        
+    }
+})
+
+
+
+
 //Logout Logic
 logoutButton.addEventListener("click", () => {
     localStorage.removeItem("userCode")
@@ -77,4 +99,3 @@ logoutButton.addEventListener("click", () => {
 
 
 // TO DO :
-// If cx logs out we have to clear localstorage 
