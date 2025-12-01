@@ -1,7 +1,12 @@
 let userCode
 let userName
 const findPartner = document.getElementById("buttonFindPartner");
-const partnerInput = document.getElementById("partnerInput")
+const partnerInput = document.getElementById("partnerInput");
+const logoutButton = document.getElementById("logoutButton");
+const thinkofuButton = document.getElementById("thinkofuButton")
+const refreshRecentBox = document.getElementById("refreshRecentBox")
+const recentBox = document.getElementById("recentBox")
+
 // Getting the user code and name from the local storage 
 // Also checking if client has partner
 
@@ -67,6 +72,61 @@ findPartner.addEventListener("click", async () => {
     }
 });
 
+// Saving messages
+thinkofuButton.addEventListener("click", async() => {
+    userCode = localStorage.getItem("userCode")
+    try {
+        const res = await fetch("/saveThink", {
+            method: "POST",
+            headers : {"Content-Type":"application/json"},
+            body : JSON.stringify({userCode:userCode})
+        });
+        const response = await res.json()
+        console.log(response.message)
+        refreshRecentBox.click()
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+//RecentBox 
+refreshRecentBox.addEventListener("click", async() => {
+    userCode = localStorage.getItem("userCode")
+    try{
+        const res = await fetch("/refreshBox", {
+            method: "POST",
+            headers : {"Content-Type":"application/json"},
+            body : JSON.stringify({userCode:userCode})
+        });
+        const response = await res.json()
+        console.log(response.message)
+        recentBox.innerHTML = ''
+        response.message.forEach(message => {
+            const messageDiv = document.createElement("div")
+
+            // FORMATING FOR NICE TIME SHOWING 
+            const date = new Date(message.sent_at);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            const formatted = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+            messageDiv.textContent = `Time = ${formatted} : ${message.content} by ${message.sender_code}`
+            recentBox.appendChild(messageDiv)
+        });
+    }catch(err){
+        console.log(err)
+    }
+})
+
+//Logout Logic
+logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("userCode")
+    localStorage.removeItem("userName")
+    window.location.href = "/index.html"
+})
+
 
 // TO DO :
-// If cx logs out we have to clear localstorage 

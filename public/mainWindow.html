@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="mainWindow.css">
+    <link rel="stylesheet" href="/css/mainWindow.css">
     
     <title>Thinkofu</title>
 </head>
@@ -13,6 +13,8 @@
         <h2 id="welcomeMessage">Welcome to thinkofu</h2>
     </header>
 
+    <button id="logoutButton">Logout</button>
+
     <body>
         <div id="partnerInfo">
             <p>Stay close, even when apart</p>
@@ -21,9 +23,10 @@
         <div id="recentBox">
 
         </div>
+        <button id="refreshRecentBox"> Refresh </button>
 
         <div id="thinkofu">
-            <button class="pushable">
+            <button id="thinkofuButton" class="pushable">
                 <span class="shadow"></span>
                 <span class="edge"></span>
                 <span class="front"> Thinkofu </span>
@@ -46,6 +49,6 @@
         
     </footer>
 
-    <script src="mainWindow.js"></script>
+    <script src="/js/mainWindow.js"></script>
 </body>
 </html>

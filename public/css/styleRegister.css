@@ -1,7 +1,7 @@
 body{
     height: 100vh;
     margin: 0;
-    background-image: url("/resources/fondo.jpeg");
+    background-image: url("/images/fondo.jpeg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;

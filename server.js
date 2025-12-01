@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require("bcrypt"); // module to encrypt password 
 const app = express();
 const PORT = 3000;
-app.use(express.static(__dirname)); // Serves all the files in the directory 
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+app.use(express.static('public')); // Serves all the files in the directory 
 app.use(express.json()); // We let server know we will send json to parse back to js
 
 // Postgres Setup
@@ -115,6 +116,15 @@ app.post('/findPartner', async(req,res) => {
                 "UPDATE users SET partner_id = $1 WHERE id = $2",
                 [currentUserData.id,partnerData.id]
             );          
+            const roomId = [currentUserData.id,partnerData.id].sort().join("-"); // create room id 
+            await pool.query(
+                "UPDATE users SET room_id = $1 WHERE id = $2",
+                [roomId,currentUserData.id]
+            )
+            await pool.query(
+                "UPDATE users SET room_id = $1 WHERE id = $2",
+                [roomId,partnerData.id]
+            )
             res.json({success: true, message: "Partner Found and linked!", userCode : partnerData.code, userName: partnerData.name})
             console.log("Partners were linked succesfully")
         }
@@ -151,6 +161,49 @@ app.post('/checkPartner', async(req,res) => {
         res.status(500).json({success:false, message : "Server error when checking for partner"})
     }
 });
+
+//POST TO SAVE THINKFOFUS 
+app.post('/saveThink', async(req,res) => {
+    const {userCode} = req.body;
+    const content = "Your partner is thinking of you"
+    try{
+        const userInfo = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [userCode]
+        );
+        const roomid = userInfo.rows[0].room_id // pedimos la info del user y extraemos el room id 
+        await pool.query(
+            "INSERT INTO messages (room_id, sender_code, content) VALUES ($1,$2,$3)",
+            [roomid, userCode,content]
+        )
+        res.json({success: true, message: "Message saved!"})
+        console.log("Backend saved the message")
+    }catch(err){
+        console.log(err)
+        console.error("Error when trying to save a thinkofu to the database")
+    }
+})
+
+app.post('/refreshBox', async(req,res) => {
+    const {userCode} = req.body;
+    try{
+        const userInfo = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [userCode]
+        )
+        const roomid = userInfo.rows[0].room_id // pedimos la info del user y extraemos el room id
+
+        const messages = await pool.query(
+            'SELECT * FROM messages WHERE room_id = $1 ORDER BY sent_at DESC LIMIT 10',
+            [roomid]
+        )
+        const messagesOrdered = messages.rows.reverse()
+        res.json({success: true, message: messagesOrdered})
+    }catch(err){
+        console.log(err)
+    }
+})
+
 
 app.listen(2000, () => {
     console.log("Server runnin in port 3000")
