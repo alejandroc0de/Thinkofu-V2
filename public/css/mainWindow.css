@@ -1,0 +1,148 @@
+html,body{
+    height: 100%;
+    overflow: hidden;
+}
+
+body{
+    background-color: aquamarine;
+    height: 100%;
+    margin: 15%;
+    margin-top: 10%;
+    background-image: url("/images/fondo.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    backdrop-filter: blur(30px);
+    text-align: center;
+}
+
+#recentBox{
+    background-color: hsla(0, 0%, 100%, 0.305);
+    margin: 20px;
+    border: 1px solid hsl(271, 41%, 71%);
+    border-radius: 40px;
+    height: 400px;
+}
+
+/* STYLING FOR BOTTON */ 
+
+.pushable {
+  position: relative;
+  background: transparent;
+  padding: 0px;
+  border: none;
+  cursor: pointer;
+  outline-offset: 4px;
+  outline-color: deeppink;
+  transition: filter 250ms;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: hsl(226, 25%, 69%);
+  border-radius: 8px;
+  filter: blur(2px);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(
+    to right,
+    hsl(248, 39%, 39%) 0%,
+    hsl(248, 39%, 49%) 8%,
+    hsl(248, 39%, 39%) 92%,
+    hsl(248, 39%, 29%) 100%
+  );
+}
+.front {
+  display: block;
+  position: relative;
+  border-radius: 8px;
+  background: hsl(271, 41%, 71%);
+  padding: 16px 32px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 1rem;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+.pushable:hover {
+  filter: brightness(110%);
+}
+.pushable:hover .front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+.pushable:active .front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+.pushable:hover .shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+.pushable:active .shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+.pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* STYLING FOR INPUT */
+
+.input {
+  height: 40px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  caret-color: rgb(255, 81, 0);
+  box-shadow: 5px 5px 20px hwb(299 68% 10% / 0.2);;
+  background-color: rgba(255, 255, 255, 0.465);
+  border-radius: 30px;
+  padding-left: 15px;
+  letter-spacing: 0.8px;
+  color: rgb(0, 0, 0);
+  font-size: 20.4px;
+  font-weight: 500;
+}
+
+.no-Show{
+  display: none;
+}
+#thinkofu{
+  margin-top: 50px;
+}
+#logoutButton {
+  font-family: monospace;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background-color: rgba(255, 255, 255, 0.264);
+  font-size: 1rem;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+#recentBox {
+  margin: 20px auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
