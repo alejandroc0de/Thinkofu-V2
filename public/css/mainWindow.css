@@ -141,7 +141,7 @@ body{
 
 #recentBox {
   margin: 20px auto;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
