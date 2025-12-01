@@ -125,7 +125,6 @@ app.post('/findPartner', async(req,res) => {
                 "UPDATE users SET room_id = $1 WHERE id = $2",
                 [roomId,partnerData.id]
             )
-
             res.json({success: true, message: "Partner Found and linked!", userCode : partnerData.code, userName: partnerData.name})
             console.log("Partners were linked succesfully")
         }
@@ -166,10 +165,22 @@ app.post('/checkPartner', async(req,res) => {
 //POST TO SAVE THINKFOFUS 
 app.post('/saveThink', async(req,res) => {
     const {userCode} = req.body;
+    const content = "Your partner is thinking of you"
     try{
-        
+        const userInfo = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [userCode]
+        );
+        const roomid = userInfo.rows[0].room_id // pedimos la info del user y extraemos el room id 
+        await pool.query(
+            "INSERT INTO messages (room_id, sender_code, content) VALUES ($1,$2,$3)",
+            [roomid, userCode,content]
+        )
+        res.json({success: true, message: "Message saved!"})
+        console.log("Backend saved the message")
     }catch(err){
-
+        console.log(err)
+        console.error("Error when trying to save a thinkofu to the database")
     }
 })
 

@@ -4,6 +4,8 @@ const findPartner = document.getElementById("buttonFindPartner");
 const partnerInput = document.getElementById("partnerInput");
 const logoutButton = document.getElementById("logoutButton");
 const thinkofuButton = document.getElementById("thinkofuButton")
+const refreshRecentBox = document.getElementById("refreshRecentBox")
+
 // Getting the user code and name from the local storage 
 // Also checking if client has partner
 
@@ -70,24 +72,22 @@ findPartner.addEventListener("click", async () => {
 });
 
 // Saving messages
-
 thinkofuButton.addEventListener("click", async() => {
-    let message = "Your partner is thinking of you"
     userCode = localStorage.getItem("userCode")
-    console.log(userCode)
     try {
         const res = await fetch("/saveThink", {
             method: "POST",
             headers : {"Content-Type":"application/json"},
             body : JSON.stringify({userCode:userCode})
         });
-        
+        const response = await res.json()
+        console.log(response.message)
     } catch (err) {
-        
+        console.log(err)
     }
 })
 
-
+//RecentBox 
 
 
 //Logout Logic
