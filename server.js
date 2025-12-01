@@ -184,6 +184,27 @@ app.post('/saveThink', async(req,res) => {
     }
 })
 
+app.post('/refreshBox', async(req,res) => {
+    const {userCode} = req.body;
+    try{
+        const userInfo = await pool.query(
+            'SELECT * FROM users WHERE code = $1',
+            [userCode]
+        )
+        const roomid = userInfo.rows[0].room_id // pedimos la info del user y extraemos el room id
+
+        const messages = await pool.query(
+            'SELECT * FROM messages WHERE room_id = $1 ORDER BY sent_at DESC LIMIT 10',
+            [roomid]
+        )
+        const messagesOrdered = messages.rows.reverse()
+        res.json({success: true, message: messagesOrdered})
+    }catch(err){
+        console.log(err)
+    }
+})
+
+
 app.listen(2000, () => {
     console.log("Server runnin in port 3000")
 });

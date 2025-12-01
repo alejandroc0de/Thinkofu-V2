@@ -138,3 +138,11 @@ body{
   font-weight: bold;
   border-radius: 20px;
 }
+
+#recentBox {
+  margin: 20px auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
