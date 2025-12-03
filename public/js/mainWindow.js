@@ -112,8 +112,13 @@ refreshRecentBox.addEventListener("click", async() => {
             const hours = String(date.getHours()).padStart(2, "0");
             const minutes = String(date.getMinutes()).padStart(2, "0");
             const formatted = `${year}-${month}-${day} ${hours}:${minutes}`;
-
-            messageDiv.textContent = `Time = ${formatted} : ${message.content} by ${message.sender_code}`
+            messageDiv.textContent = `${formatted} : ${message.content} by ${message.sender_code}`
+            if(message.sender_code == userCode){
+                messageDiv.classList.add("messageUser")
+            }else{
+                messageDiv.classList.add("messagePartner")
+            }
+            
             recentBox.appendChild(messageDiv)
         });
     }catch(err){

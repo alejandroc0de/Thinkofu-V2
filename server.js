@@ -184,6 +184,7 @@ app.post('/saveThink', async(req,res) => {
     }
 })
 
+
 app.post('/refreshBox', async(req,res) => {
     const {userCode} = req.body;
     try{
@@ -194,7 +195,7 @@ app.post('/refreshBox', async(req,res) => {
         const roomid = userInfo.rows[0].room_id // pedimos la info del user y extraemos el room id
 
         const messages = await pool.query(
-            'SELECT * FROM messages WHERE room_id = $1 ORDER BY sent_at DESC LIMIT 10',
+            'SELECT * FROM messages WHERE room_id = $1 ORDER BY sent_at DESC LIMIT 7',
             [roomid]
         )
         const messagesOrdered = messages.rows.reverse()
