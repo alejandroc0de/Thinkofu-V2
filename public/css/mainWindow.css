@@ -22,6 +22,7 @@ body{
     border: 1px solid hsl(271, 41%, 71%);
     border-radius: 40px;
     height: 400px;
+    width: 60%;
 }
 
 /* STYLING FOR BOTTON */ 
@@ -110,7 +111,7 @@ body{
   border: none;
   outline: none;
   caret-color: rgb(255, 81, 0);
-  box-shadow: 5px 5px 20px hwb(299 68% 10% / 0.2);;
+  box-shadow: 5px 5px 20px hwb(299 68% 10% / 0.2);
   background-color: rgba(255, 255, 255, 0.465);
   border-radius: 30px;
   padding-left: 15px;
@@ -140,9 +141,55 @@ body{
 }
 
 #recentBox {
+  overflow: scroll;
   margin: 20px auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 19px;
+}
+/* Refresh Button styling */ 
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  height: 34px;
+  width: 20%;
+  border: none;
+  background: #ff362b34;
+  border-radius: 20px;
+  cursor: pointer;
+
+}
+
+.lable {
+  line-height: 20px;
+  font-size: 17px;
+  color: #ff342b;
+  letter-spacing: 1px;
+}
+
+.button:hover {
+  background: #ff362b52;
+}
+
+.button:hover .svg-icon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+#refreshRecentBox {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
 }
